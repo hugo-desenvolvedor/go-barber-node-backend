@@ -1,10 +1,10 @@
 import User from '@modules/users/infra/typeorm/entities/User';
-import IUsersRepository from '../repositories/IUsersRepository';
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
     email: string;
@@ -18,20 +18,25 @@ interface IResponse {
 
 @injectable()
 class AuthenticateUserService {
-    constructor (
+    constructor(
         @inject('UsersRepository')
-        private usersRepository: IUsersRepository
-    ) {};
-    
+        private usersRepository: IUsersRepository,
+
+        @inject('HashProvider')
+        private hashProvider: IHashProvider,
+    ) {}
+
     public async execute({ email, password }: IRequest): Promise<IResponse> {
-        
         const user = await this.usersRepository.findByEmail(email);
 
         if (!user) {
             throw new AppError('Incorrect email/password combination', 401);
         }
 
-        const passwordMatched = await compare(password, user.password);
+        const passwordMatched = await this.hashProvider.compareHash(
+            password,
+            user.password,
+        );
 
         if (!passwordMatched) {
             throw new AppError('Incorrect email/password combination', 401);
@@ -39,22 +44,15 @@ class AuthenticateUserService {
 
         delete user.password;
 
-        const token = sign(
-            {
-
-            },
-            authConfig.jwt.secret,
-            {
-                subject: user.id,
-                expiresIn: authConfig.jwt.expiresIn
-            }
-        );
+        const token = sign({}, authConfig.jwt.secret, {
+            subject: user.id,
+            expiresIn: authConfig.jwt.expiresIn,
+        });
 
         return {
             user,
-            token
-        }
-
+            token,
+        };
     }
 }
 

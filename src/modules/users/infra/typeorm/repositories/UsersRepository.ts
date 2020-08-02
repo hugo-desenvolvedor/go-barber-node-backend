@@ -3,7 +3,7 @@ import { Repository, getRepository } from 'typeorm';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 
-class UsersRepository implements IUsersRepository  {
+class UsersRepository implements IUsersRepository {
     private ormRepository: Repository<User>;
 
     constructor() {
@@ -12,20 +12,20 @@ class UsersRepository implements IUsersRepository  {
 
     public async findById(id: string): Promise<User | undefined> {
         const findAppointment = await this.ormRepository.findOne({
-            where: { id }
+            where: { id },
         });
 
         return findAppointment;
     }
-    
+
     public async findByEmail(email: string): Promise<User | undefined> {
         const findAppointment = await this.ormRepository.findOne({
-            where: { email }
+            where: { email },
         });
 
         return findAppointment;
     }
-    
+
     public async create(data: ICreateUserDTO): Promise<User> {
         const user = this.ormRepository.create(data);
 

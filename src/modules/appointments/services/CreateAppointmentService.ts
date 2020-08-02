@@ -9,30 +9,34 @@ import IAppointmentRepository from '@modules/appointments/repositories/IAppointm
  * DTO - Data transfer object
  */
 interface IRequest {
-    provider_id: string
+    provider_id: string;
     date: Date;
 }
 
 @injectable()
 class CreateAppointmentService {
-
-    constructor (
+    constructor(
         @inject('AppointmentsRepository')
-        private appointmentsRepository: IAppointmentRepository
-    ) {};
+        private appointmentsRepository: IAppointmentRepository,
+    ) {}
 
-    public async execute({ date, provider_id }: IRequest): Promise<Appointment> {
+    public async execute({
+        date,
+        provider_id,
+    }: IRequest): Promise<Appointment> {
         const appointmentDate = startOfHour(date);
-        
-        const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(appointmentDate);
+
+        const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
+            appointmentDate,
+        );
 
         if (findAppointmentInSameDate) {
-            throw new AppError("This appointment is already booked");
+            throw new AppError('This appointment is already booked');
         }
 
         const appointment = this.appointmentsRepository.create({
             provider_id,
-            date: appointmentDate
+            date: appointmentDate,
         });
 
         return appointment;
