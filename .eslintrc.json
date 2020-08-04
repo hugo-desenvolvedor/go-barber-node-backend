@@ -36,7 +36,9 @@
           "ts": "never"
         }
       ],
-      "indent": ["error", 4, { "VariableDeclarator": "first" }]
+      "indent": ["error", 4, { "VariableDeclarator": "first" }],
+      "class-methods-use-this": "off",
+      "no-useless-constructor": "off"
     },
     "settings": {
       "import/resolver": {
