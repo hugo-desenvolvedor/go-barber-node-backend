@@ -41,7 +41,7 @@ describe('AuthenticateUser', () => {
 
         const [email, password] = ['John Doe', 'johndoe@example.com', '123456'];
 
-        expect(
+        await expect(
             authenticateUser.execute({ email, password }),
         ).rejects.toBeInstanceOf(AppError);
     });
@@ -68,10 +68,11 @@ describe('AuthenticateUser', () => {
 
         await createUser.execute({ name, email, password });
 
-        expect(
+        await expect(
             authenticateUser.execute({ email: wrongEmail, password }),
         ).rejects.toBeInstanceOf(AppError);
-        expect(
+
+        await expect(
             authenticateUser.execute({ email, password: wrongPassword }),
         ).rejects.toBeInstanceOf(AppError);
     });

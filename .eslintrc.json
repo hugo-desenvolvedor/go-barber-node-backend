@@ -38,7 +38,19 @@
       ],
       "indent": ["error", 4, { "VariableDeclarator": "first" }],
       "class-methods-use-this": "off",
-      "no-useless-constructor": "off"
+      "no-useless-constructor": "off",
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          "selector": "interface",
+          "format": ["PascalCase"],
+          "custom": {
+            "regex": "^I[A-Z]",
+            "match": true
+          }
+        }
+      ],
+      "one-var": "off"
     },
     "settings": {
       "import/resolver": {
