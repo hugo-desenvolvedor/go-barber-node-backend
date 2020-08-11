@@ -41,4 +41,12 @@ describe('ResetPassword', () => {
 
         expect(updatedUser?.password).toBe(NEW_PASSWORD);
     });
+
+    it('should be able to reset the password', async () => {});
+
+    it('should not be able to reset the password with non-existing token', async () => {});
+
+    it('should not be able to reset the password with non-existing user', async () => {});
+
+    it('should not be able to reset password if passed more than 2 hours', async () => {});
 });
