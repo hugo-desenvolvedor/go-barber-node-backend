@@ -2,9 +2,11 @@ import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeUserTokensRepository from '../repositories/fakes/FakeUserTokensRepository';
 import ResetPasswordService from './ResetPasswordService';
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeUserTokensRepository: FakeUserTokensRepository;
+let fakeHashProvider: FakeHashProvider;
 let resetPassword: ResetPasswordService;
 
 let name: string;
@@ -15,10 +17,12 @@ describe('ResetPassword', () => {
     beforeEach(() => {
         fakeUsersRepository = new FakeUsersRepository();
         fakeUserTokensRepository = new FakeUserTokensRepository();
+        fakeHashProvider = new FakeHashProvider();
 
         resetPassword = new ResetPasswordService(
             fakeUsersRepository,
             fakeUserTokensRepository,
+            fakeHashProvider,
         );
 
         [name, email, password] = ['John Doe', 'johndoe@example.com', '123456'];
