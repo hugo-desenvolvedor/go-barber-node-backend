@@ -40,8 +40,8 @@ class UpdateProfileService {
 
         if (password && oldPassword) {
             const checkedPassword = await this.hashProvider.compareHash(
-                user.password,
                 oldPassword,
+                user.password,
             );
 
             if (!checkedPassword) {
