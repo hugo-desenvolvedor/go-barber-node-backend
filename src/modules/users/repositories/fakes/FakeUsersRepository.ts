@@ -1,6 +1,7 @@
 import User from '@modules/users/infra/typeorm/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 
 import { uuid } from 'uuidv4';
 
@@ -32,11 +33,21 @@ class FakeUsersRepository implements IUsersRepository {
     public async save(user: User): Promise<User> {
         const userId = user.id;
 
-        const findIndex = this.users.findIndex(user => user.id === userId);
+        const foundIndex = this.users.findIndex(user => user.id === userId);
 
-        this.users[findIndex] = user;
+        this.users[foundIndex] = user;
 
         return user;
+    }
+
+    public async findAllProviders(data: IFindAllProvidersDTO): Promise<User[]> {
+        const { ignoredUserId } = data;
+
+        if (!ignoredUserId) {
+            return this.users;
+        }
+
+        return this.users.filter(user => user.id !== ignoredUserId);
     }
 }
 

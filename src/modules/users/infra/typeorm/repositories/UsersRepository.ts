@@ -1,7 +1,8 @@
 import User from '@modules/users/infra/typeorm/entities/User';
-import { Repository, getRepository } from 'typeorm';
+import { Repository, getRepository, Not } from 'typeorm';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 
 class UsersRepository implements IUsersRepository {
     private ormRepository: Repository<User>;
@@ -19,11 +20,11 @@ class UsersRepository implements IUsersRepository {
     }
 
     public async findByEmail(email: string): Promise<User | undefined> {
-        const findAppointment = await this.ormRepository.findOne({
+        const foundUser = await this.ormRepository.findOne({
             where: { email },
         });
 
-        return findAppointment;
+        return foundUser;
     }
 
     public async create(data: ICreateUserDTO): Promise<User> {
@@ -38,6 +39,18 @@ class UsersRepository implements IUsersRepository {
         await this.ormRepository.save(user);
 
         return user;
+    }
+
+    public async findAllProviders(data: IFindAllProvidersDTO): Promise<User[]> {
+        const { ignoredUserId } = data;
+
+        if (!ignoredUserId) {
+            return this.ormRepository.find();
+        }
+
+        return this.ormRepository.find({
+            where: { id: Not(ignoredUserId) },
+        });
     }
 }
 
