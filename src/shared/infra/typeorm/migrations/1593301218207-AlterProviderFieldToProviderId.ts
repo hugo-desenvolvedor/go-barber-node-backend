@@ -5,6 +5,7 @@ import {
     TableForeignKey,
 } from 'typeorm';
 
+// eslint-disable-next-line import/prefer-default-export
 export class AlterProviderFieldToProviderId1593301218207
 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {

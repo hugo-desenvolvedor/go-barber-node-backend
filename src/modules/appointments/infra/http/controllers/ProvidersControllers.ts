@@ -12,7 +12,7 @@ export default class ProvidersController {
         request: Request,
         response: Response,
     ): Promise<Response> {
-        const { userId } = request.body;
+        const userId = request.user.id;
 
         const listProviders = container.resolve(ListProvidersService);
 

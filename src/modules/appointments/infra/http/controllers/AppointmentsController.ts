@@ -12,13 +12,13 @@ export default class AppointmentsController {
         request: Request,
         response: Response,
     ): Promise<Response> {
-        const { provider_id, date } = request.body;
+        const { providerId, date } = request.body;
 
         const parsedDate = parseISO(date);
         const createAppointment = container.resolve(CreateAppointmentService);
 
         const appointment = await createAppointment.execute({
-            provider_id,
+            providerId,
             date: parsedDate,
         });
 

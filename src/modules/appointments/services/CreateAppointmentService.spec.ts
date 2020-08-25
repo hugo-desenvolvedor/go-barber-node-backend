@@ -10,16 +10,16 @@ describe('CreateAppointment', () => {
             fakeAppointmentRepository,
         );
 
-        const provider_id = '123456';
+        const providerId = '123456';
         const date = new Date();
 
         const appointment = await createAppointmentService.execute({
             date,
-            provider_id,
+            providerId,
         });
 
         expect(appointment).toHaveProperty('id');
-        expect(appointment.provider_id).toBe(provider_id);
+        expect(appointment.provider_id).toBe(providerId);
         expect(appointment.date.toISOString()).toBe(
             startOfHour(date).toISOString(),
         );
@@ -31,18 +31,18 @@ describe('CreateAppointment', () => {
             fakeAppointmentRepository,
         );
 
-        const provider_id = '123456';
+        const providerId = '123456';
         const date = new Date();
 
-        const appointment = await createAppointmentService.execute({
+        await createAppointmentService.execute({
             date,
-            provider_id,
+            providerId,
         });
 
         await expect(
             createAppointmentService.execute({
                 date,
-                provider_id,
+                providerId,
             }),
         ).rejects.toBeInstanceOf(AppError);
     });
