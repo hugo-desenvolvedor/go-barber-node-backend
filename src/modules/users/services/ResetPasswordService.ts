@@ -36,6 +36,16 @@ class ResetPasswordService {
             throw new AppError('User does not exists');
         }
 
+        const currentDate = new Date(Date.now());
+        const tokenDate = userToken.created_at;
+
+        const currentTime = currentDate.getTime() / 1000;
+        const tokenTime = tokenDate.getTime() / 1000;
+
+        if ((currentTime - tokenTime) / 60 / 60 > 2) {
+            throw new AppError('Token expired');
+        }
+
         user.password = await this.hashProvider.generateHash(password);
 
         await this.usersRepository.save(user);
