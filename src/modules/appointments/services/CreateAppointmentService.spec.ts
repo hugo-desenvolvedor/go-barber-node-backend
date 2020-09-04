@@ -1,10 +1,12 @@
 import { startOfHour } from 'date-fns';
 import AppError from '@shared/errors/AppError';
+import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import CreateAppointmentService from './CreateAppointmentService';
 
 describe('CreateAppointment', () => {
     let fakeAppointmentRepository: FakeAppointmentRepository;
+    let fakeNotificationsRepository: FakeNotificationsRepository;
     let createAppointmentService: CreateAppointmentService;
 
     let providerId: string;
@@ -12,8 +14,10 @@ describe('CreateAppointment', () => {
 
     beforeEach(() => {
         fakeAppointmentRepository = new FakeAppointmentRepository();
+        fakeNotificationsRepository = new FakeNotificationsRepository();
         createAppointmentService = new CreateAppointmentService(
             fakeAppointmentRepository,
+            fakeNotificationsRepository,
         );
 
         providerId = 'provider-id';
